@@ -1,85 +1,112 @@
 import streamlit as st
 from gemini_helper import ask_gemini
 
-st.set_page_config(page_title="AI Coding Tutor", page_icon="🤖")
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(
+    page_title="AI Coding Tutor",
+    page_icon="🤖",
+    layout="wide"
+)
 
+# ---------------- SIDEBAR ----------------
+with st.sidebar:
+    st.title("🤖 AI Coding Tutor")
+    st.markdown("---")
+
+    st.subheader("👨‍💻 Developer")
+    st.write("**Zidaan Shaikh**")
+
+    st.markdown("---")
+
+    st.subheader("📚 Features")
+
+    st.markdown("""
+- Explain Code
+- Debug Code
+- Python Questions
+- Theory Questions
+- Gemini AI Powered
+""")
+
+    st.markdown("---")
+    st.success("AI & ML Diploma Project")
+
+# ---------------- HEADER ----------------
 st.title("🤖 AI Coding Tutor")
-st.write("Ask coding questions, get explanations, debugging help, and theory answers.")
 
-menu = st.sidebar.selectbox(
-    "Choose Feature",
+st.markdown("""
+### Learn Python with the help of Gemini AI
+
+Paste your Python code or ask any programming question.
+""")
+
+st.markdown("---")
+
+# ---------------- OPTION ----------------
+option = st.selectbox(
+    "Choose Task",
     [
-        "Ask Coding Question",
         "Explain Code",
         "Debug Code",
+        "Python Coding Question",
         "Theory Question"
     ]
 )
 
-# 1. Ask Coding Question
-if menu == "Ask Coding Question":
-    question = st.text_input("Enter your coding question")
+# ---------------- INPUT ----------------
+user_input = st.text_area(
+    "Enter your code or question",
+    height=200,
+    placeholder="Paste Python code or type your question here..."
+)
 
-    if st.button("Get Answer"):
-        if question:
-            prompt = f"""
-You are an expert AI Coding Tutor.
-provide code for this question, and give short explanation:.
+col1, col2 = st.columns(2)
 
-Question:
-{question}
-"""
-            response = ask_gemini(prompt)
-            st.success(response)
-        else:
-            st.warning("Please enter a question")
+submit = col1.button("🚀 Generate Answer", use_container_width=True)
+clear = col2.button("🗑 Clear", use_container_width=True)
 
-# 2. Explain Code
-elif menu == "Explain Code":
-    code = st.text_area("Paste your code here")
+if clear:
+    st.rerun()
 
-    if st.button("Explain"):
-        if code:
-            prompt = f"""
-Explain this Python code in simple terms and in short:
+# ---------------- PROMPTS ----------------
+if submit:
 
-{code}
-"""
-            response = ask_gemini(prompt)
-            st.success(response)
-        else:
-            st.warning("Please paste code")
+    if user_input.strip() == "":
+        st.warning("Please enter some text.")
+        st.stop()
 
-# 3. Debug Code
-elif menu == "Debug Code":
-    code = st.text_area("Paste buggy code")
+    if option == "Explain Code":
+        prompt = f"Explain this Python code in simple language in short:\n\n{user_input}"
 
-    if st.button("Debug"):
-        if code:
-            prompt = f"""
-You are a Python debugging expert.
+    elif option == "Debug Code":
+        prompt = f"Find errors in this Python code and provide the corrected version:\n\n{user_input}"
 
-Find errors and fix the code:
+    elif option == "Python Coding Question":
+        prompt = f"Solve this Python coding question with short explanation:\n\n{user_input}"
 
-{code}
-"""
-            response = ask_gemini(prompt)
-            st.success(response)
-        else:
-            st.warning("Please paste code")
+    else:
+        prompt = f"Answer this Python theory question in points:\n\n{user_input}"
 
-# 4. Theory Question
-elif menu == "Theory Question":
-    question = st.text_input("Ask theory question")
+    with st.spinner("🤖zid's AI is thinking... "):
+        answer = ask_gemini(prompt)
 
-    if st.button("Explain"):
-        if question:
-            prompt = f"""
-Explain this Python concept simply in short:
+    st.markdown("---")
+    st.subheader("✅ zid's AI Response")
 
-{question}
-"""
-            response = ask_gemini(prompt)
-            st.success(response)
-        else:
-            st.warning("Please enter a question")
+    st.success(answer)
+
+# ---------------- FOOTER ----------------
+st.markdown("---")
+
+st.markdown(
+    """
+<div style='text-align:center; color:gray;'>
+
+Made with ❤️ using Streamlit + Google Gemini
+
+**Developer:** Zidaan Shaikh
+
+</div>
+""",
+unsafe_allow_html=True,
+)

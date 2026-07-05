@@ -11,6 +11,7 @@ st.set_page_config(
 # ---------------- SIDEBAR ----------------
 with st.sidebar:
     st.title("🤖 AI Coding Tutor")
+
     st.markdown("---")
 
     st.subheader("👨‍💻 Developer")
@@ -21,44 +22,99 @@ with st.sidebar:
     st.subheader("📚 Features")
 
     st.markdown("""
-- Explain Code
-- Debug Code
-- Python Questions
-- Theory Questions
-- Gemini AI Powered
+✅ Explain Code
+
+✅ Debug Code
+
+✅ Coding Questions
+
+✅ Theory Questions
 """)
 
     st.markdown("---")
-    st.success("AI & ML Diploma Project")
 
-# ---------------- HEADER ----------------
-st.title("🤖 AI Coding Tutor")
+    st.subheader("🛠 Tech Stack")
 
-st.markdown("""
-### Learn Python with the help of Gemini AI
+    st.markdown("""
+🐍 Python
 
-Paste your Python code or ask any programming question.
+🌐 Streamlit
+
+🤖 Google Gemini
 """)
 
-st.markdown("---")
+    st.markdown("---")
 
-# ---------------- OPTION ----------------
+    st.success("Version 1.0")
+
+# ---------------- HERO HEADER ----------------
+
+st.markdown("""
+<div style="
+background: linear-gradient(90deg,#2563eb,#7c3aed);
+padding:30px;
+border-radius:18px;
+text-align:center;
+color:white;
+">
+
+<h1>🤖 AI Coding Tutor</h1>
+
+<h3>Learn Python Smarter with Zid'AI</h3>
+
+<p style="font-size:18px;">
+💡 Explain Code &nbsp;&nbsp;|&nbsp;&nbsp;
+🐞 Debug Code &nbsp;&nbsp;|&nbsp;&nbsp;
+📖 Theory Questions &nbsp;&nbsp;|&nbsp;&nbsp;
+💻 Coding Questions
+</p>
+
+<p><b>Developed by Zidaan Shaikh</b></p>
+
+</div>
+""", unsafe_allow_html=True)
+
+st.write("")
+
+# ---------------- FEATURE CARDS ----------------
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.info("💻\n\nCoding Questions")
+
+with col2:
+    st.success("📖\n\nExplain Code")
+
+with col3:
+    st.warning("🐞\n\nDebug Code")
+
+with col4:
+    st.error("🧠\n\nTheory Questions")
+
+st.write("")
+
+# ---------------- TASK ----------------
+
 option = st.selectbox(
-    "Choose Task",
-    [
+    "📌 Choose Your Task",
+    (
         "Explain Code",
         "Debug Code",
         "Python Coding Question",
         "Theory Question"
-    ]
+    )
 )
 
 # ---------------- INPUT ----------------
+
 user_input = st.text_area(
-    "Enter your code or question",
-    height=200,
-    placeholder="Paste Python code or type your question here..."
+    "✍ Enter your code or question",
+    height=220,
+    placeholder="Paste your Python code or type your question here..."
 )
+
+st.write("")
 
 col1, col2 = st.columns(2)
 
@@ -68,45 +124,87 @@ clear = col2.button("🗑 Clear", use_container_width=True)
 if clear:
     st.rerun()
 
-# ---------------- PROMPTS ----------------
+# ---------------- AI ----------------
+
 if submit:
 
     if user_input.strip() == "":
-        st.warning("Please enter some text.")
+        st.warning("⚠ Please enter your code or question.")
         st.stop()
 
     if option == "Explain Code":
-        prompt = f"Explain this Python code in simple language in short:\n\n{user_input}"
+        prompt = f"""
+Explain this Python code in simple language.
+
+Keep the explanation beginner-friendly.
+
+Code:
+
+{user_input}
+"""
 
     elif option == "Debug Code":
-        prompt = f"Find errors in this Python code and provide the corrected version:\n\n{user_input}"
+        prompt = f"""
+You are a Python debugging expert.
+
+Find all errors.
+
+Explain why they occur.
+
+Provide corrected code.
+
+Code:
+
+{user_input}
+"""
 
     elif option == "Python Coding Question":
-        prompt = f"Solve this Python coding question with short explanation:\n\n{user_input}"
+        prompt = f"""
+Solve this Python question.
+
+Explain the logic briefly.
+
+Question:
+
+{user_input}
+"""
 
     else:
-        prompt = f"Answer this Python theory question in points:\n\n{user_input}"
+        prompt = f"""
+Explain this Python theory topic.
 
-    with st.spinner("🤖zid's AI is thinking... "):
+Answer in easy points.
+
+Question:
+
+{user_input}
+"""
+
+    with st.spinner("🤖 Zid'AI is thinking..."):
+
         answer = ask_gemini(prompt)
 
-    st.markdown("---")
-    st.subheader("✅ zid's AI Response")
+    st.write("")
 
-    st.success(answer)
+    st.subheader("🤖 Zid'AI Response")
+
+    st.markdown(answer)
 
 # ---------------- FOOTER ----------------
+
 st.markdown("---")
 
 st.markdown(
-    """
-<div style='text-align:center; color:gray;'>
+"""
+<div style="text-align:center;color:gray;">
 
-Made with ❤️ using Streamlit + Google Gemini
+Made with ❤️ using Python • Streamlit • Google Gemini
 
-**Developer:** Zidaan Shaikh
+<br>
+
+<b>Developed by Zidaan Shaikh</b>
 
 </div>
 """,
-unsafe_allow_html=True,
+unsafe_allow_html=True
 )
